@@ -6,11 +6,12 @@ const app = express();
 
 app.use(express.json());
 
-// import clientesRoutes from './src/clientes/routes.js'
+import router from "./clientes/routes/cliente.routes.js";
+import router from "./produtos/routes/pedido.routes.js";
 
-// app.use('/api/cliente', clientesRoutes)
+app.use('/api/cliente', router)
 // app.use('/api/pedido', pedidosRoutes)
-// app.use('/api/produto', produtosRoutes)
+app.use('/api/produto', router)
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
