@@ -19,7 +19,7 @@ async function sincronizar() {
   try {
     await sequelize.authenticate();
     console.log("Conexão realizada com sucesso!");
-    await sequelize.sync({ force: true, alter: true });
+    await sequelize.sync({ force: true, alter: false });
     console.log("Tabelas criadas com sucesso");
   } catch (error) {
     console.error("Erro ao se conectar com o banco:", error.message);

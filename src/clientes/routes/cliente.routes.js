@@ -1,18 +1,18 @@
 import express from 'express';
 import ClienteController from '../controllers/cliente.controller.js';
 
-const router = express.Router()
+const clienteRouter = express.Router()
 
 // criar cliente
-router.post('/criar', ClienteController.criarCliente);
+clienteRouter.post('/criar', ClienteController.criarCliente);
 
 // listar cliente
-router.get('/', ClienteController.listarClientes);
+clienteRouter.get('/', ClienteController.listarClientes);
 
 // atualizar cliente
-router.patch('/atualizar/:id', ClienteController.atualizarCliente);
+clienteRouter.patch('/atualizar/:id', ClienteController.atualizarCliente);
 
 // excluir cliente
-router.delete('/deletar/:id', ClienteController.excluirCliente);
+clienteRouter.delete('/deletar/:id', ClienteController.excluirCliente);
 
-export default router;
+export default clienteRouter;

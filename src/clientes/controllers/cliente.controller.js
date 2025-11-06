@@ -5,7 +5,7 @@ class ClienteController {
     try {
       const { nome, email, telefone, endereco } = req.body;
       if (!nome || !email || !telefone || !endereco) {
-        return res.status(400).json({ msg: "Nenhum campo deve ficar vazio." });
+        return res.status(400).json({ msg: "Todos os campos devem ser preenchidos." });
       }
 
       const novoUsuario = await ClienteModel.create({
