@@ -1,8 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../../config/database.js";
-// import ClienteModel from "../../clientes/models/cliente.model.js";
-// import ProdutoModel from "../../produtos/models/produto.model.js";
-// import ItensPedidos from "../../itensPedidos/itemPedido.model.js";
 
 const PedidoModel = sequelize.define(
   "pedidos",
@@ -19,14 +16,9 @@ const PedidoModel = sequelize.define(
       defaultValue: 1,
       allowNull: false,
     },
-
-    data_pedido: {
-      type: DataTypes.DATE,
-      isDate: true,
-    },
   },
   {
-    tableName: "clientes",
+    tableName: "pedidos",
     createdAt: "criado_em",
     updatedAt: "atualizado_em",
     deletedAt: "deletado_em",

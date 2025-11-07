@@ -6,23 +6,23 @@ import ItensPedidos from "./itensPedidos/itemPedido.model.js";
 // relação cliente - pedido (1 para N)
 ClienteModel.hasMany(PedidoModel, {
     foreignKey: 'clienteId',
-    as: 'pedidosCliente'
+    as: 'PedidosCliente'
 });
 PedidoModel.belongsTo(ClienteModel, {
     foreignKey: 'clienteId',
-    as: 'clientes'
+    as: 'DetalhesCliente'
 });
 
 // relação pedido - produto (M para N)
 PedidoModel.belongsToMany(ProdutoModel, {
     through: ItensPedidos,
     foreignKey: 'pedidoId',
-    as: 'produtos'
+    as: 'DetalheProduto'
 });
 ProdutoModel.belongsToMany(PedidoModel, {
     through: ItensPedidos,
     foreignKey: 'produtoId',
-    as: 'pedidosProduto'
+    as: 'PedidosProduto'
 });
 
 export default {

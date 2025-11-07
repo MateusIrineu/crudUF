@@ -1,7 +1,5 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../../config/database.js";
-import PedidoModel from "../../pedidos/models/pedido.model.js";
-import ItensPedidos from "../../itensPedidos/itemPedido.model.js";
 
 const ProdutoModel = sequelize.define(
     'produtos', {
@@ -41,12 +39,5 @@ const ProdutoModel = sequelize.define(
         deletedAt: 'deletado_em'
     },
 );
-
-// 1 produto pode estar em vários pedidos
-ProdutoModel.belongsToMany(PedidoModel, {
-    through: ItensPedidos,
-    foreignKey: 'produtoId',
-    as: 'pedidos'
-})
 
 export default ProdutoModel;

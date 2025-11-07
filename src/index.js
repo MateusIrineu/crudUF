@@ -1,8 +1,26 @@
 import dotenv from "dotenv";
 import express from "express";
-import './associations.js'
+import sequelize from "../config/database.js";
+import './modules.index.js'
 
 dotenv.config();
+
+async function sincronizar() {
+  try {
+    await sequelize.authenticate();
+    console.log("Conexão realizada com sucesso!");
+
+    await sequelize.sync({ alter: true });
+    console.log("Tabelas criadas com sucesso");
+
+  } catch (error) {
+    console.error("Erro ao se conectar com o banco:", error.message);
+    process.exit(1);
+  }
+}
+
+// sincronizar();
+
 const app = express();
 
 app.use(express.json());
@@ -16,6 +34,13 @@ app.use('/api/pedido', pedidoRouter);
 app.use('/api/produto', prudutoRouter);
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+
+async function iniciarServidor() {
+  await sincronizar(); // aqui ele espera a sincronização acontecer para depois subir o servidor
+
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+  });
+}
+
+iniciarServidor(); // depois de sincronizar, o servidor é executado
