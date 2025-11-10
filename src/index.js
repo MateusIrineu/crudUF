@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import sequelize from "../config/database.js";
 import './modules.index.js'
+import cors from 'cors';
 
 dotenv.config();
 
@@ -10,7 +11,7 @@ async function sincronizar() {
     await sequelize.authenticate();
     console.log("Conexão realizada com sucesso!");
 
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ force: false, alter: true });
     console.log("Tabelas criadas com sucesso");
 
   } catch (error) {
@@ -19,11 +20,14 @@ async function sincronizar() {
   }
 }
 
-// sincronizar();
-
 const app = express();
-
 app.use(express.json());
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 import clienteRouter from "./clientes/routes/cliente.routes.js";
 import prudutoRouter from "./produtos/routes/produto.routes.js";

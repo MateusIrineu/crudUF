@@ -86,8 +86,9 @@ class PedidoController {
 
   static async atualizarPedido(req, res) {
     try {
+      // id do pedido
       const id = req.params.id;
-      const procurandoPedido = await PedidoModel.findByPk(id);
+      const procurandoPedido = await ItensPedidos.findByPk(id);
       if (procurandoPedido === 0) {
         return res
           .status(400)
@@ -100,6 +101,24 @@ class PedidoController {
         { where: { id } }
       );
       res.status(200).json({ msg: "Pedido atualizado com sucesso!" });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ msg: "Erro interno do servidor.", error: error.message });
+    }
+  }
+
+  static async excluirPedido(req, res) {
+    try {
+      const id = req.params.id;
+      const pedidoDeletado = await PedidoModel.destroy({ where: { id } });
+      if (pedidoDeletado === null) {
+        return res
+          .status(400)
+          .json({ msg: "Pedido não encontrado.", error: error.message });
+      }
+
+      res.status(200).json({ msg: "Pedido deletado com sucesso!" });
     } catch (error) {
       res
         .status(500)

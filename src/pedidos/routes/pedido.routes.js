@@ -12,4 +12,7 @@ pedidoRouter.get('/', PedidoController.listarPedidos);
 // atualizar pedido
 pedidoRouter.patch('/atualizar/:id', PedidoController.atualizarPedido);
 
+// deletar pedido
+pedidoRouter.delete('/delete/:id', PedidoController.excluirPedido);
+
 export default pedidoRouter;
