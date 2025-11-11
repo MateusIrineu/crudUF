@@ -31,7 +31,7 @@ export class ClienteService {
 
   // O HttpClient é injetado no construtor
   // Httpclient é o módulo nativo do angular para requisições de forma assíncrona via Observable
-  constructor(private http: HttpClient) { } 
+  constructor(private http: HttpClient) {} 
 
   // a chamda HTTP é inerente assíncrona, por isso o Observable
   // Observable: mecanismo assíncrono para lidar com operações que demoram no BROWSER(Rede)
@@ -39,22 +39,28 @@ export class ClienteService {
   // todos as funções terão Observable<nomeDoModel>
 
   // Omit literalmente omite as informações do modelo que foram listadas logo em seguida
-  // próprio do Typescript
+  // é um Utility type do próprio do Typescript
   criarCliente(cliente: Omit<Cliente, 'id' | 'criado_em' | 'atualizado_em'>): Observable<Cliente> {
     return this.http.post<Cliente>(this.apiUrl, cliente);
+    // no return, retornar o tipo da requisição HTTP
   }
 
+  // sempre retornar dentro de um array
   listarClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl);
   }
 
+  // o Partial torna os atributos não obrigatórios de serem editados.
+  // o usuário ao editar, pode deixar campos em branco, não acusando erro pelo Typescript.
+  // é um Utility Type do Typescript
+  // Payload - corpo da mensagem
   atualizarCliente(id: string, cliente: Partial<Cliente>): Observable<Cliente> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.put<Cliente>(url, cliente);
+    return this.http.patch<Cliente>(url, cliente);
   }
 
-  excluirCliente(id: string): Observable<any> {
+  excluirCliente(id: string): Observable<void> {
     const url = `${this.apiUrl}/${id}`;
-    return this.http.delete(url);
+    return this.http.delete<void>(url);
   }
 };
