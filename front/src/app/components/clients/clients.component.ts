@@ -5,8 +5,7 @@ import { Cliente, ClienteService } from './client.service';
   selector: 'app-clients',
   imports: [],
   templateUrl: './clients.component.html',
-  styleUrl: './clients.component.scss'
 })
 export class ClientsComponent {
-
+// LOGICA
 }
