@@ -1,0 +1,54 @@
+<po-page p-title="Clientes">
+  <po-page-content class="po-row">
+    <div class="po-md-12 po-lg-12">
+      <po-button 
+        p-label="Novo Cliente" 
+        p-kind="primary"
+        p-icon="po-icon-plus"
+        [routerLink]="['/clientes/novo']">
+      </po-button>
+    </div>
+
+    <div class="po-md-12 po-lg-12 po-mt-2">
+      <po-table
+        [p-items]="clientes"
+        [p-columns]="columns"
+        [p-loading]="isLoading"
+        p-striped="true"
+        p-sort="true">
+        
+        <ng-template p-table-row-template let-rowItem>
+          <po-table-row [p-item]="rowItem">
+            <po-table-cell>
+              <po-button
+                p-label="Editar"
+                p-kind="secondary"
+                p-size="small"
+                p-icon="po-icon-edit"
+                [routerLink]="['/clientes', rowItem.id]">
+              </po-button>
+              <po-button
+                p-label="Deletar"
+                p-kind="danger"
+                p-size="small"
+                p-icon="po-icon-delete"
+                (p-click)="abrirModalDelecao(rowItem)">
+              </po-button>
+            </po-table-cell>
+          </po-table-row>
+        </ng-template>
+      </po-table>
+    </div>
+  </po-page-content>
+</po-page>
+
+<!-- Modal de Confirmação de Deleção -->
+<po-modal
+  p-title="Confirmar Exclusão"
+  [p-primary-action]="{ label: 'Excluir', action: confirmarDelecao.bind(this) }"
+  [p-secondary-action]="{ label: 'Cancelar', action: cancelarDelecao.bind(this) }"
+  [p-visible]="!!clienteSelecionado">
+  <p *ngIf="clienteSelecionado">
+    Tem certeza que deseja deletar <strong>{{ clienteSelecionado.nome }}</strong>?
+  </p>
+</po-modal>

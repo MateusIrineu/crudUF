@@ -1,0 +1,68 @@
+<po-page [p-title]="pageTitle">
+  <po-page-content>
+    <form [formGroup]="form">
+      <div class="po-row">
+        <po-field-text
+          class="po-md-6"
+          p-label="Nome"
+          p-icon="po-icon-user"
+          p-required="true"
+          formControlName="nome"
+          [p-error]="form.get('nome')?.hasError('required') ? 'Campo obrigatório' : 
+                     form.get('nome')?.hasError('minlength') ? 'Mínimo 3 caracteres' : ''"
+                     >
+        </po-field-text>
+
+        <po-field-email
+          class="po-md-6"
+          p-label="Email"
+          p-icon="po-icon-mail"
+          p-required="true"
+          formControlName="email"
+          [p-error]="form.get('email')?.hasError('required') ? 'Campo obrigatório' : 
+                     form.get('email')?.hasError('email') ? 'Email inválido' : ''">
+        </po-field-email>
+      </div>
+
+      <div class="po-row">
+        <po-field-phone
+          class="po-md-6"
+          p-label="Telefone"
+          p-icon="po-icon-phone"
+          p-required="true"
+          formControlName="telefone"
+          [p-error]="form.get('telefone')?.hasError('required') ? 'Campo obrigatório' : ''">
+        </po-field-phone>
+
+        <po-field-text
+          class="po-md-6"
+          p-label="Endereço"
+          p-icon="po-icon-location"
+          p-required="true"
+          formControlName="endereco"
+          [p-error]="form.get('endereco')?.hasError('required') ? 'Campo obrigatório' : ''">
+        </po-field-text>
+      </div>
+
+      <div class="po-row po-mt-2">
+        <div class="po-md-12">
+          <po-button
+            p-label="Salvar"
+            p-kind="primary"
+            p-icon="po-icon-ok"
+            [p-loading]="isLoading"
+            [p-disabled]="form.invalid"
+            (p-click)="salvar()">
+          </po-button>
+
+          <po-button
+            p-label="Cancelar"
+            p-kind="secondary"
+            p-icon="po-icon-close"
+            (p-click)="cancelar()">
+          </po-button>
+        </div>
+      </div>
+    </form>
+  </po-page-content>
+</po-page>

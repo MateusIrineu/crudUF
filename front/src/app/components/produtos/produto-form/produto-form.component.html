@@ -1,0 +1,65 @@
+<po-page [p-title]="pageTitle">
+  <po-page-content>
+    <form [formGroup]="form">
+      <div class="po-row">
+        <po-field-text
+          class="po-md-6"
+          p-label="Nome"
+          p-icon="po-icon-tag"
+          p-required="true"
+          formControlName="nome"
+          [p-error]="form.get('nome')?.hasError('required') ? 'Campo obrigatório' : ''">
+        </po-field-text>
+
+        <po-field-text
+          class="po-md-6"
+          p-label="Descrição"
+          p-icon="po-icon-document"
+          p-required="true"
+          formControlName="descricao"
+          [p-error]="form.get('descricao')?.hasError('required') ? 'Campo obrigatório' : ''">
+        </po-field-text>
+      </div>
+
+      <div class="po-row">
+        <po-field-text
+          class="po-md-6"
+          p-label="Preço"
+          p-icon="po-icon-money"
+          p-required="true"
+          formControlName="preco"
+          [p-error]="form.get('preco')?.hasError('required') ? 'Campo obrigatório' : ''">
+        </po-field-text>
+
+        <po-field-number
+          class="po-md-6"
+          p-label="Estoque"
+          p-icon="po-icon-barcode"
+          p-required="true"
+          formControlName="estoque"
+          [p-error]="form.get('estoque')?.hasError('required') ? 'Campo obrigatório' : ''">
+        </po-field-number>
+      </div>
+
+      <div class="po-row po-mt-2">
+        <div class="po-md-12">
+          <po-button
+            p-label="Salvar"
+            p-kind="primary"
+            p-icon="po-icon-ok"
+            [p-loading]="isLoading"
+            [p-disabled]="form.invalid"
+            (p-click)="salvar()">
+          </po-button>
+
+          <po-button
+            p-label="Cancelar"
+            p-kind="secondary"
+            p-icon="po-icon-close"
+            (p-click)="cancelar()">
+          </po-button>
+        </div>
+      </div>
+    </form>
+  </po-page-content>
+</po-page>
