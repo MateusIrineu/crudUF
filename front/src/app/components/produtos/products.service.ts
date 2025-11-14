@@ -21,7 +21,8 @@ export class ProdutoService {
     constructor(private http: HttpClient) {}
 
     criarProduto(produto: Omit<Produto, 'id' | 'criado_em' | 'atualizado_em'>): Observable<Produto> {
-        return this.http.post<Produto>(this.apiUrl, produto);
+        const url = `${this.apiUrl}/criar`
+        return this.http.post<Produto>(url, produto);
     };
 
     listarProdutos(): Observable<Produto[]> {
@@ -29,12 +30,12 @@ export class ProdutoService {
     }
 
     atualizarProduto(id: string, produto: Partial<Produto>): Observable<Produto> {
-        const url = `${this.apiUrl}/${id}`;
+        const url = `${this.apiUrl}/atualizar/${id}`;
         return this.http.patch<Produto>(url, produto);
     }
 
     excluirProduto(id: string): Observable<void> {
-        const url = `${this.apiUrl}/${id}`;
+        const url = `${this.apiUrl}/deletar/${id}`;
         return this.http.delete<void>(url);
     }
 };

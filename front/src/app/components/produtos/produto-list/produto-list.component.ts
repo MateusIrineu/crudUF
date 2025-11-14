@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PoPageModule, PoTableModule, PoButtonModule, PoModalModule } from '@po-ui/ng-components';
+import { PoPageModule, PoTableModule, PoButtonModule, PoModalModule, PoModalComponent } from '@po-ui/ng-components';
 import { ProdutoService, Produto } from '../products.service';
 
 @Component({
@@ -13,6 +13,8 @@ import { ProdutoService, Produto } from '../products.service';
   templateUrl: './produto-list.component.html'
 })
 export class ProdutoListComponent implements OnInit {
+  @ViewChild('modalDelecao') modalDelecao!: PoModalComponent
+
   produtos: Produto[] = [];
   isLoading = false;
   produtoSelecionado: Produto | null = null;
@@ -24,6 +26,16 @@ export class ProdutoListComponent implements OnInit {
     { property: 'preco', label: 'Preço', width: '15%' },
     { property: 'estoque', label: 'Estoque', width: '15%' }
   ];
+
+  primaryAction = {
+    label: 'Deletar',
+    action: () => this.confirmarDelecao()
+  };
+
+  secondaryAction = {
+    label: 'Cancelar',
+    action: () => this.cancelarDelecao()
+  };
 
   constructor(private produtoService: ProdutoService) {}
 
@@ -52,6 +64,7 @@ export class ProdutoListComponent implements OnInit {
 
   abrirModalDelecao(produto: Produto): void {
     this.produtoSelecionado = produto;
+    this.modalDelecao.open();
   }
 
   confirmarDelecao(): void {
@@ -60,6 +73,7 @@ export class ProdutoListComponent implements OnInit {
         next: () => {
           this.carregarProdutos();
           this.produtoSelecionado = null;
+          this.modalDelecao.close();
         },
         error: (erro) => console.error('Erro ao deletar:', erro)
       });
@@ -68,5 +82,6 @@ export class ProdutoListComponent implements OnInit {
 
   cancelarDelecao(): void {
     this.produtoSelecionado = null;
+    this.modalDelecao.close();
   }
 }

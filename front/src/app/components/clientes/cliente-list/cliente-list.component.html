@@ -1,5 +1,6 @@
 <po-page p-title="Clientes">
   <po-page-content class="po-row">
+
     <div class="po-md-12 po-lg-12">
       <po-button 
         p-label="Novo Cliente" 
@@ -27,6 +28,7 @@
                 p-icon="po-icon-edit"
                 [routerLink]="['/clientes', rowItem.id]">
               </po-button>
+
               <po-button
                 p-label="Deletar"
                 p-kind="danger"
@@ -44,10 +46,10 @@
 
 <!-- Modal de Confirmação de Deleção -->
 <po-modal
+  #modalDelecao
   p-title="Confirmar Exclusão"
-  [p-primary-action]="{ label: 'Excluir', action: confirmarDelecao.bind(this) }"
-  [p-secondary-action]="{ label: 'Cancelar', action: cancelarDelecao.bind(this) }"
-  [p-visible]="!!clienteSelecionado">
+  [p-primary-action]="primaryAction"
+  [p-secondary-action]="secondaryAction">
   <p *ngIf="clienteSelecionado">
     Tem certeza que deseja deletar <strong>{{ clienteSelecionado.nome }}</strong>?
   </p>

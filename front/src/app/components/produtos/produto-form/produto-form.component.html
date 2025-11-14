@@ -2,43 +2,43 @@
   <po-page-content>
     <form [formGroup]="form">
       <div class="po-row">
-        <po-field-text
+        <po-input
           class="po-md-6"
-          p-label="Nome"
-          p-icon="po-icon-tag"
+          p-label="Nome do produto"
+          p-icon="an an-apple-logo"
           p-required="true"
           formControlName="nome"
           [p-error]="form.get('nome')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-field-text>
+        </po-input>
 
-        <po-field-text
+        <po-input
           class="po-md-6"
-          p-label="Descrição"
+          p-label="Descrição do produto"
           p-icon="po-icon-document"
           p-required="true"
           formControlName="descricao"
           [p-error]="form.get('descricao')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-field-text>
+        </po-input>
       </div>
 
       <div class="po-row">
-        <po-field-text
+        <po-input
           class="po-md-6"
-          p-label="Preço"
+          p-label="Preço (exemplo: R$ 10,00)"
           p-icon="po-icon-money"
           p-required="true"
           formControlName="preco"
           [p-error]="form.get('preco')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-field-text>
+        </po-input>
 
-        <po-field-number
+        <po-input
           class="po-md-6"
-          p-label="Estoque"
-          p-icon="po-icon-barcode"
+          p-label="Quantidade em estoque"
+          p-icon="an an-archive"
           p-required="true"
           formControlName="estoque"
           [p-error]="form.get('estoque')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-field-number>
+        </po-input>
       </div>
 
       <div class="po-row po-mt-2">

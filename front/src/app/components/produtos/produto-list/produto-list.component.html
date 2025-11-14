@@ -44,10 +44,10 @@
 
 <!-- Modal de Confirmação de Deleção -->
 <po-modal
+  #modalDelecao
   p-title="Confirmar Exclusão"
-  [p-primary-action]="{ label: 'Excluir', action: confirmarDelecao.bind(this) }"
-  [p-secondary-action]="{ label: 'Cancelar', action: cancelarDelecao.bind(this) }"
-  [p-visible]="!!produtoSelecionado">
+  [p-primary-action]="primaryAction"
+  [p-secondary-action]="secondaryAction">
   <p *ngIf="produtoSelecionado">
     Tem certeza que deseja deletar <strong>{{ produtoSelecionado.nome }}</strong>?
   </p>

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { PoPageModule, PoTableModule, PoButtonModule, PoModalModule } from '@po-ui/ng-components';
+import { PoPageModule, PoTableModule, PoButtonModule, PoModalModule, PoModalComponent } from '@po-ui/ng-components';
 import { ClienteService, Cliente } from '../cliente.service';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-cliente-list',
@@ -13,6 +14,8 @@ import { ClienteService, Cliente } from '../cliente.service';
   templateUrl: './cliente-list.component.html'
 })
 export class ClienteListComponent implements OnInit {
+  @ViewChild('modalDelecao') modalDelecao!: PoModalComponent
+
   clientes: Cliente[] = [];
   isLoading = false;
   clienteSelecionado: Cliente | null = null;
@@ -24,6 +27,16 @@ export class ClienteListComponent implements OnInit {
     { property: 'telefone', label: 'Telefone', width: '15%' },
     { property: 'endereco', label: 'Endereço', width: '20%' }
   ];
+
+  primaryAction = {
+    label: 'Deletar',
+    action: () => this.confirmarDelecao()
+  };
+
+  secondaryAction = {
+    label: 'Cancelar',
+    action: () => this.cancelarDelecao()
+  };
 
   constructor(private clienteService: ClienteService) {}
 
@@ -51,6 +64,7 @@ export class ClienteListComponent implements OnInit {
 
   abrirModalDelecao(cliente: Cliente): void {
     this.clienteSelecionado = cliente;
+    this.modalDelecao.open();
   }
 
   confirmarDelecao(): void {
@@ -59,6 +73,7 @@ export class ClienteListComponent implements OnInit {
         next: () => {
           this.carregarClientes();
           this.clienteSelecionado = null;
+          this.modalDelecao.close()
         },
         error: (erro) => console.error('Erro ao deletar:', erro)
       });
@@ -67,5 +82,6 @@ export class ClienteListComponent implements OnInit {
 
   cancelarDelecao(): void {
     this.clienteSelecionado = null;
+    this.modalDelecao.close();
   }
 }

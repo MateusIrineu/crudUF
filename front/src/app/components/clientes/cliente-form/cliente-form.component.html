@@ -2,7 +2,7 @@
   <po-page-content>
     <form [formGroup]="form">
       <div class="po-row">
-        <po-field-text
+        <po-input
           class="po-md-6"
           p-label="Nome"
           p-icon="po-icon-user"
@@ -11,9 +11,9 @@
           [p-error]="form.get('nome')?.hasError('required') ? 'Campo obrigatório' : 
                      form.get('nome')?.hasError('minlength') ? 'Mínimo 3 caracteres' : ''"
                      >
-        </po-field-text>
+        </po-input>
 
-        <po-field-email
+        <po-input
           class="po-md-6"
           p-label="Email"
           p-icon="po-icon-mail"
@@ -21,27 +21,27 @@
           formControlName="email"
           [p-error]="form.get('email')?.hasError('required') ? 'Campo obrigatório' : 
                      form.get('email')?.hasError('email') ? 'Email inválido' : ''">
-        </po-field-email>
+        </po-input>
       </div>
 
       <div class="po-row">
-        <po-field-phone
+        <po-input
           class="po-md-6"
           p-label="Telefone"
-          p-icon="po-icon-phone"
+          p-icon="an an-phone"
           p-required="true"
           formControlName="telefone"
           [p-error]="form.get('telefone')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-field-phone>
+        </po-input>
 
-        <po-field-text
+        <po-input
           class="po-md-6"
           p-label="Endereço"
-          p-icon="po-icon-location"
+          p-icon=""
           p-required="true"
           formControlName="endereco"
           [p-error]="form.get('endereco')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-field-text>
+        </po-input>
       </div>
 
       <div class="po-row po-mt-2">

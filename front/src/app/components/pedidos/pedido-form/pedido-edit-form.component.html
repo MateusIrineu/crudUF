@@ -1,7 +1,7 @@
 <po-page [p-title]="pageTitle">
   <po-page-content>
     <form [formGroup]="form">
-      <div class="po-row">
+      <!-- <div class="po-row">
         <po-input
           class="po-md-12"
           p-label="Cliente ID"
@@ -10,11 +10,11 @@
           formControlName="clienteId"
           [p-error]="form.get('clienteId')?.hasError('required') ? 'Campo obrigatório' : ''">
         </po-input>
-      </div>
+      </div> -->
 
       <div class="po-row po-mt-2">
         <div class="po-md-12">
-          <h3>Itens do Pedido</h3>
+          <h3>Edição de quantidade do produto no pedido:</h3>
         </div>
       </div>
 
@@ -23,7 +23,7 @@
         <po-input
           class="po-md-6"
           p-label="Produto ID"
-          p-icon="an an-user-check"
+          p-icon="an an-apple-logo"
           p-required="true"
           [formControl]="getControl(item, 'produtoId')"
           [p-error]="getControl(item, 'produtoId')?.hasError('required') ? 'Campo obrigatório' : ''">
@@ -38,26 +38,26 @@
           [p-error]="getControl(item, 'quantidade')?.hasError('required') ? 'Campo obrigatório' : ''">
         </po-input>          
         <div class="po-md-2" style="display: flex; align-items: flex-end">
-            <po-button
+            <!-- <po-button
               p-label="Remover"
               p-kind="danger"
               p-icon="po-icon-delete"
               p-size="small"
               [p-disabled]="itens.length === 1"
               (p-click)="removerItem(i)">
-            </po-button>
+            </po-button> -->
           </div>
         </div>
       </div>
 
       <div class="po-row po-mt-2">
         <div class="po-md-12">
-          <po-button
+          <!-- <po-button
             p-label="Adicionar Item"
             p-kind="secondary"
             p-icon="po-icon-plus"
             (p-click)="adicionarItem()">
-          </po-button>
+          </po-button> -->
         </div>
       </div>
 
@@ -67,7 +67,7 @@
             p-label="Salvar"
             p-kind="primary"
             p-icon="po-icon-ok"
-            [p-loading]="isLoading"
+            
             [p-disabled]="form.invalid"
             (p-click)="salvar()">
           </po-button>

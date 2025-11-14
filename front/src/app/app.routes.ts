@@ -44,7 +44,7 @@ export const routes: Routes = [
   },
   {
     path: 'pedidos/:id',
-    loadComponent: () => import('./components/pedidos/pedido-form/pedido-form.component').then(m => m.PedidoFormComponent)
+    loadComponent: () => import('./components/pedidos/pedido-form/pedido-edit-form.component').then(m => m.PedidoEditFormComponent)
   },
 
   // Rota padrão -> redireciona para clientes

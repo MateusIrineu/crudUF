@@ -56,7 +56,8 @@ export class PedidoService {
     // salva a exceção que o id deverá ser passado, quando for id de autoincremento, não deverá ser passado.
     // buscando a forma normal criarExemplo(exemplo: Omit<Exemplo>, 'id' | ...<Exemplo>).
     criarPedido(pedido: PedidoParaCriacao): Observable<Pedido> {
-        return this.http.post<Pedido>(this.apiUrl, pedido);
+        const url = `${this.apiUrl}/criar`
+        return this.http.post<Pedido>(url, pedido);
     }
 
     listarPedidos(): Observable<Pedido[]> {
@@ -64,12 +65,12 @@ export class PedidoService {
     }
 
     atualizarPedido(id: string, pedido: Partial<Pedido>): Observable<Pedido> {
-        const url = `${this.apiUrl}/${id}`;
+        const url = `${this.apiUrl}/atualizar/${id}`;
         return this.http.patch<Pedido>(url, pedido);
     }
 
     excluirPedido(id: string): Observable<void> {
-        const url = `${this.apiUrl}/${id}`;
+        const url = `${this.apiUrl}/delete/${id}`;
         return this.http.delete<void>(url)
     }
 }
