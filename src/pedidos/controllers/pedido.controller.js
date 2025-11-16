@@ -20,8 +20,6 @@ class PedidoController {
       const novoPedido = await PedidoModel.create({ clienteId });
 
       const produtosIds = itens.map((item) => item.produtoId);
-      // produtosIds vai armazenar todos os produtos pela FK produtoId
-      // busco em produtosExistentes com método findAll todos os protudos que batem com o produtoId
       const produtosExistentes = await ProdutoModel.findAll({
         where: { id: produtosIds },
       });
@@ -33,9 +31,7 @@ class PedidoController {
       }
 
       const associacoes = produtosExistentes.map((produto) => {
-        // vendo se cada item de produtosExistentes (denominado i de itens) tem sua chave estrangeira igual a sua chave primária
         const item = itens.find((i) => i.produtoId === produto.id);
-
         return novoPedido.addDetalheProduto(produto, {
           through: {
             quantidade: item.quantidade,
@@ -52,7 +48,7 @@ class PedidoController {
             model: ProdutoModel,
             as: "DetalheProduto",
             through: {
-              model: ItensPedidos, // ARRUMAR ISSO AQUI NA SEGUNDA
+              model: ItensPedidos,
               attributes: ["quantidade"],
             },
           },
@@ -71,8 +67,21 @@ class PedidoController {
 
   static async listarPedidos(req, res) {
     try {
-      const todosPedidos = await PedidoModel.findAll();
-      if (todosPedidos === 0) {
+      const todosPedidos = await PedidoModel.findAll({
+        include: [
+          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ProdutoModel,
+            as: "DetalheProduto",
+            through: {
+              model: ItensPedidos,
+              attributes: ["quantidade"],
+            },
+          },
+        ],
+      });
+      
+      if (todosPedidos.length === 0) {
         return res.status(400).json({ msg: "Nenhum pedido encontrado." });
       }
 
@@ -84,23 +93,75 @@ class PedidoController {
     }
   }
 
+  static async obterPedido(req, res) {
+    try {
+      const id = req.params.id;
+      const buscandoPedido = await PedidoModel.findByPk(id, {
+        include: [
+          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ProdutoModel,
+            as: "DetalheProduto",
+            through: {
+              model: ItensPedidos,
+              attributes: ["quantidade"],
+            },
+          },
+        ],
+      });
+      
+      if (!buscandoPedido) {
+        return res.status(404).json({ msg: 'Pedido não encontrado' });
+      }
+      
+      res.status(200).json(buscandoPedido);
+    } catch (error) {
+      res.status(500).json({ msg: 'Erro ao buscar pedido', error: error.message });
+    }
+  }
+
   static async atualizarPedido(req, res) {
     try {
-      // id do pedido
-      const id = req.params.id;
-      const procurandoPedido = await ItensPedidos.findByPk(id);
-      if (procurandoPedido === 0) {
-        return res
-          .status(400)
-          .json({ msg: "Pedido não encontrado.", error: error.message });
-      }
-      const { quantidade } = req.body;
+      const pedidoId = req.params.id;
+      const { itens } = req.body;
 
-      const pedidoAtualizado = await PedidoModel.update(
-        { quantidade },
-        { where: { id } }
-      );
-      res.status(200).json({ msg: "Pedido atualizado com sucesso!" });
+      const pedido = await PedidoModel.findByPk(pedidoId);
+      if (!pedido) {
+        return res
+          .status(404)
+          .json({ msg: "Pedido não encontrado." });
+      }
+
+      // Atualizar quantidade para cada item
+      if (itens && Array.isArray(itens)) {
+        for (const item of itens) {
+          await ItensPedidos.update(
+            { quantidade: item.quantidade },
+            { 
+              where: { 
+                pedidoId: pedidoId,
+                produtoId: item.produtoId
+              } 
+            }
+          );
+        }
+      }
+
+      const pedidoAtualizado = await PedidoModel.findByPk(pedidoId, {
+        include: [
+          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ProdutoModel,
+            as: "DetalheProduto",
+            through: {
+              model: ItensPedidos,
+              attributes: ["quantidade"],
+            },
+          },
+        ],
+      });
+
+      res.status(200).json({ msg: "Pedido atualizado com sucesso!", pedido: pedidoAtualizado });
     } catch (error) {
       res
         .status(500)
@@ -112,10 +173,10 @@ class PedidoController {
     try {
       const id = req.params.id;
       const pedidoDeletado = await PedidoModel.destroy({ where: { id } });
-      if (pedidoDeletado === null) {
+      if (pedidoDeletado === 0) {
         return res
-          .status(400)
-          .json({ msg: "Pedido não encontrado.", error: error.message });
+          .status(404)
+          .json({ msg: "Pedido não encontrado." });
       }
 
       res.status(200).json({ msg: "Pedido deletado com sucesso!" });

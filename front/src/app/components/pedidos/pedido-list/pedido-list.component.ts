@@ -13,7 +13,7 @@ import { PedidoService, Pedido } from '../pedidos.service';
   templateUrl: './pedido-list.component.html'
 })
 export class PedidoListComponent implements OnInit {
-  @ViewChild('modalDelecao') modalDelecao!: PoModalComponent
+  @ViewChild('modalDelecao') modalDelecao!: PoModalComponent;
 
   pedidos: Pedido[] = [];
   isLoading = false;
@@ -22,8 +22,9 @@ export class PedidoListComponent implements OnInit {
   columns = [
     { property: 'id', label: 'ID', width: '15%' },
     { property: 'clienteId', label: 'Cliente ID', width: '20%' },
+    { property: 'quantidade', label: 'Quantidade de produtos no pedido', width: '20%' },
     { property: 'criado_em', label: 'Data Criação', width: '25%' },
-    { property: 'atualizado_em', label: 'Última Atualização', width: '25%' }
+    { property: 'atualizado_em', label: 'Última Atualização', width: '20%' }
   ];
 
   primaryAction = {
@@ -46,7 +47,10 @@ export class PedidoListComponent implements OnInit {
     this.isLoading = true;
     this.pedidoService.listarPedidos().subscribe({
       next: (dados) => {
-        this.pedidos = dados;
+        this.pedidos = dados.map((pedido: any) => ({
+          ...pedido,
+          quantidade: pedido.DetalheProduto ? pedido.DetalheProduto.length : 0
+        }));
         this.isLoading = false;
       },
       error: (erro) => {
@@ -54,10 +58,6 @@ export class PedidoListComponent implements OnInit {
         this.isLoading = false;
       }
     });
-  }
-
-  editarPedido(pedido: Pedido): void {
-    console.log('Editar:', pedido);
   }
 
   abrirModalDelecao(pedido: Pedido): void {

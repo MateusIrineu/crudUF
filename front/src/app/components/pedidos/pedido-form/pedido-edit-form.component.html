@@ -1,16 +1,6 @@
 <po-page [p-title]="pageTitle">
   <po-page-content>
     <form [formGroup]="form">
-      <!-- <div class="po-row">
-        <po-input
-          class="po-md-12"
-          p-label="Cliente ID"
-          p-icon="po-icon-user"
-          p-required="true"
-          formControlName="clienteId"
-          [p-error]="form.get('clienteId')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-input>
-      </div> -->
 
       <div class="po-row po-mt-2">
         <div class="po-md-12">
@@ -38,26 +28,14 @@
           [p-error]="getControl(item, 'quantidade')?.hasError('required') ? 'Campo obrigatório' : ''">
         </po-input>          
         <div class="po-md-2" style="display: flex; align-items: flex-end">
-            <!-- <po-button
-              p-label="Remover"
-              p-kind="danger"
-              p-icon="po-icon-delete"
-              p-size="small"
-              [p-disabled]="itens.length === 1"
-              (p-click)="removerItem(i)">
-            </po-button> -->
+
           </div>
         </div>
       </div>
 
       <div class="po-row po-mt-2">
         <div class="po-md-12">
-          <!-- <po-button
-            p-label="Adicionar Item"
-            p-kind="secondary"
-            p-icon="po-icon-plus"
-            (p-click)="adicionarItem()">
-          </po-button> -->
+
         </div>
       </div>
 

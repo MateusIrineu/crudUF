@@ -9,6 +9,9 @@ pedidoRouter.post('/criar', PedidoController.criarPedido);
 // listar pedidos
 pedidoRouter.get('/', PedidoController.listarPedidos);
 
+// busar pedido
+pedidoRouter.get('/:id', PedidoController.obterPedido);
+
 // atualizar pedido
 pedidoRouter.patch('/atualizar/:id', PedidoController.atualizarPedido);
 

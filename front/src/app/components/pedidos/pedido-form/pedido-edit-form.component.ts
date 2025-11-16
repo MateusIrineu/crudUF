@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PoPageModule, PoFieldModule, PoButtonModule, PoModule } from '@po-ui/ng-components';
-import { PedidoService, Pedido, ItemPedidoPayload } from '../pedidos.service';
+import { PedidoService, Pedido } from '../pedidos.service';
 
 @Component({
   selector: 'app-pedido-form',
@@ -16,10 +16,9 @@ import { PedidoService, Pedido, ItemPedidoPayload } from '../pedidos.service';
 export class PedidoEditFormComponent implements OnInit {
   form!: FormGroup;
   isLoading = false;
-  isEditando = false;
   pedidoId: string | null = null;
   pedidoOriginal: Pedido | null = null;
-  pageTitle = 'Editando Pedido';
+  pageTitle = 'Editar Pedido';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,9 +32,7 @@ export class PedidoEditFormComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.isEditando = true;
         this.pedidoId = params['id'];
-        this.pageTitle = 'Editar Pedido';
         this.carregarPedido(params['id']);
       }
     });
@@ -43,9 +40,7 @@ export class PedidoEditFormComponent implements OnInit {
 
   inicializarForm(): void {
     this.form = this.formBuilder.group({
-      itens: this.formBuilder.array([
-        this.criarItemPedido()
-      ])
+      itens: this.formBuilder.array([])
     });
   }
 
@@ -62,16 +57,11 @@ export class PedidoEditFormComponent implements OnInit {
 
   carregarPedido(id: string): void {
     this.isLoading = true;
-    this.pedidoService.listarPedidos().subscribe({
-      next: (pedidos) => {
-        // Encontra o pedido específico
-        const pedido = pedidos.find(p => p.id === id);
-        if (pedido && pedido.itens && pedido.itens.length > 0) {
+    this.pedidoService.obterPedido(id).subscribe({
+      next: (pedido) => {
+        if (pedido) {
           this.pedidoOriginal = pedido;
           this.preencherFormulario(pedido);
-        } else {
-          console.warn('Pedido não encontrado ou sem itens');
-          this.router.navigate(['/pedidos']);
         }
         this.isLoading = false;
       },
@@ -88,11 +78,12 @@ export class PedidoEditFormComponent implements OnInit {
       this.itens.removeAt(0);
     }
 
-    // Preencher com os itens do pedido
-    if (pedido.itens && Array.isArray(pedido.itens)) {
-      pedido.itens.forEach(item => {
+    // Preencher com os produtos do pedido
+    const pedidoAny = pedido as any;
+    if (pedidoAny.DetalheProduto && Array.isArray(pedidoAny.DetalheProduto)) {
+      pedidoAny.DetalheProduto.forEach((produto: any) => {
         this.itens.push(
-          this.criarItemPedido(item.produtoId, item.quantidade)
+          this.criarItemPedido(produto.id, produto.itemPedido?.quantidade || 1)
         );
       });
     }
@@ -103,44 +94,26 @@ export class PedidoEditFormComponent implements OnInit {
   }
 
   salvar(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.pedidoId || !this.pedidoOriginal) {
       return;
     }
 
     this.isLoading = true;
     const { itens } = this.form.value;
 
-    if (this.isEditando && this.pedidoId && this.pedidoOriginal) {
-      // Para edição, enviar apenas os itens com as quantidades atualizadas
-      this.pedidoService.atualizarPedido(this.pedidoId, {
-        clienteId: this.pedidoOriginal.clienteId,
-        itens: itens as any
-      }).subscribe({
-        next: () => {
-          this.router.navigate(['/pedidos']);
-          this.isLoading = false;
-        },
-        error: (erro) => {
-          console.error('Erro ao atualizar:', erro);
-          this.isLoading = false;
-        }
-      });
-    } else {
-      // Para criação
-      this.pedidoService.criarPedido({
-        clienteId: '',
-        itens: itens as ItemPedidoPayload[]
-      }).subscribe({
-        next: () => {
-          this.router.navigate(['/pedidos']);
-          this.isLoading = false;
-        },
-        error: (erro) => {
-          console.error('Erro ao criar:', erro);
-          this.isLoading = false;
-        }
-      });
-    }
+    this.pedidoService.atualizarPedido(this.pedidoId, {
+      clienteId: this.pedidoOriginal.clienteId,
+      itens: itens
+    }).subscribe({
+      next: () => {
+        this.router.navigate(['/pedidos']);
+        this.isLoading = false;
+      },
+      error: (erro) => {
+        console.error('Erro ao atualizar:', erro);
+        this.isLoading = false;
+      }
+    });
   }
 
   cancelar(): void {
