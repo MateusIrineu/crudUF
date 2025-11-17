@@ -11,3 +11,7 @@ export default {
   PedidoModel,
   ItensPedidos,
 };
+
+// po-combo dropdown
+// precificação uni/tot
+// nome do cliente e ocultar o id na tabela e valor total do pedido
