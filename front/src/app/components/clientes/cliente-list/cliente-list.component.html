@@ -1,8 +1,11 @@
-<po-page p-title="Clientes">
-  <po-page-content class="po-row">
+<po-page 
+p-title="Clientes">
+  <po-page-content 
+  class="po-row">
 
     <div class="po-md-12 po-lg-12">
       <po-button 
+        style="margin-left: 40px;"
         p-label="Novo Cliente" 
         p-kind="primary"
         p-icon="po-icon-plus"
@@ -10,7 +13,9 @@
       </po-button>
     </div>
 
-    <div class="po-md-12 po-lg-12 po-mt-2">
+    <div 
+    class="po-md-12 po-lg-12 po-mt-2"
+    >
       <po-table
         [p-items]="clientes"
         [p-columns]="columns"

@@ -20,11 +20,12 @@ export class PedidoListComponent implements OnInit {
   pedidoSelecionado: Pedido | null = null;
 
   columns = [
-    { property: 'id', label: 'ID', width: '15%' },
-    { property: 'clienteId', label: 'Cliente ID', width: '20%' },
-    { property: 'quantidade', label: 'Quantidade de produtos no pedido', width: '20%' },
-    { property: 'criado_em', label: 'Data Criação', width: '25%' },
-    { property: 'atualizado_em', label: 'Última Atualização', width: '20%' }
+    { property: 'id', label: 'ID', width: '12%' },
+    { property: 'nomeCliente', label: 'Nome do Cliente', width: '22%' },
+    { property: 'quantidade', label: 'Qtd. Produtos', width: '12%' },
+    { property: 'precoTotal', label: 'Preço Total', width: '12%', type: 'currency' },
+    { property: 'criado_em', label: 'Data Criação', width: '20%' },
+    { property: 'atualizado_em', label: 'Última Atualização', width: '22%' }
   ];
 
   primaryAction = {
@@ -47,10 +48,22 @@ export class PedidoListComponent implements OnInit {
     this.isLoading = true;
     this.pedidoService.listarPedidos().subscribe({
       next: (dados) => {
-        this.pedidos = dados.map((pedido: any) => ({
-          ...pedido,
-          quantidade: pedido.DetalheProduto ? pedido.DetalheProduto.length : 0
-        }));
+        // Adicionar a quantidade de produtos, nome do cliente e preço total
+        this.pedidos = dados.map((pedido: any) => {
+          // Calcular preço total
+          const precoTotal = pedido.DetalheProduto?.reduce((sum: number, produto: any) => {
+            const preco = parseFloat(produto.preco) || 0;
+            const quantidade = produto.itemPedido?.quantidade || 1;
+            return sum + (preco * quantidade);
+          }, 0) || 0;
+
+          return {
+            ...pedido,
+            nomeCliente: pedido.DetalhesCliente?.nome || 'N/A',
+            quantidade: pedido.DetalheProduto ? pedido.DetalheProduto.length : 0,
+            precoTotal: precoTotal
+          };
+        });
         this.isLoading = false;
       },
       error: (erro) => {

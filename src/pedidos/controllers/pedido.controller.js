@@ -43,10 +43,15 @@ class PedidoController {
 
       const pedidoCompleto = await PedidoModel.findByPk(novoPedido.id, {
         include: [
-          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ClienteModel,
+            as: "DetalhesCliente",
+            attributes: ["id", "nome"],
+          },
           {
             model: ProdutoModel,
             as: "DetalheProduto",
+            attributes: ['id', 'nome', 'preco'],
             through: {
               model: ItensPedidos,
               attributes: ["quantidade"],
@@ -69,10 +74,15 @@ class PedidoController {
     try {
       const todosPedidos = await PedidoModel.findAll({
         include: [
-          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ClienteModel,
+            as: "DetalhesCliente",
+            attributes: ["id", "nome"],
+          },
           {
             model: ProdutoModel,
             as: "DetalheProduto",
+            attributes: ['id', 'nome', 'preco'],
             through: {
               model: ItensPedidos,
               attributes: ["quantidade"],
@@ -80,7 +90,7 @@ class PedidoController {
           },
         ],
       });
-      
+
       if (todosPedidos.length === 0) {
         return res.status(400).json({ msg: "Nenhum pedido encontrado." });
       }
@@ -98,10 +108,15 @@ class PedidoController {
       const id = req.params.id;
       const buscandoPedido = await PedidoModel.findByPk(id, {
         include: [
-          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ClienteModel,
+            as: "DetalhesCliente",
+            attributes: ["id", "nome"],
+          },
           {
             model: ProdutoModel,
             as: "DetalheProduto",
+            attributes: ['id', 'nome', 'preco'],
             through: {
               model: ItensPedidos,
               attributes: ["quantidade"],
@@ -109,14 +124,16 @@ class PedidoController {
           },
         ],
       });
-      
+
       if (!buscandoPedido) {
-        return res.status(404).json({ msg: 'Pedido não encontrado' });
+        return res.status(404).json({ msg: "Pedido não encontrado" });
       }
-      
+
       res.status(200).json(buscandoPedido);
     } catch (error) {
-      res.status(500).json({ msg: 'Erro ao buscar pedido', error: error.message });
+      res
+        .status(500)
+        .json({ msg: "Erro ao buscar pedido", error: error.message });
     }
   }
 
@@ -127,9 +144,7 @@ class PedidoController {
 
       const pedido = await PedidoModel.findByPk(pedidoId);
       if (!pedido) {
-        return res
-          .status(404)
-          .json({ msg: "Pedido não encontrado." });
+        return res.status(404).json({ msg: "Pedido não encontrado." });
       }
 
       // Atualizar quantidade para cada item
@@ -137,11 +152,11 @@ class PedidoController {
         for (const item of itens) {
           await ItensPedidos.update(
             { quantidade: item.quantidade },
-            { 
-              where: { 
+            {
+              where: {
                 pedidoId: pedidoId,
-                produtoId: item.produtoId
-              } 
+                produtoId: item.produtoId,
+              },
             }
           );
         }
@@ -149,10 +164,15 @@ class PedidoController {
 
       const pedidoAtualizado = await PedidoModel.findByPk(pedidoId, {
         include: [
-          { model: ClienteModel, as: "DetalhesCliente" },
+          {
+            model: ClienteModel,
+            as: "DetalhesCliente",
+            attributes: ["id", "nome"],
+          },
           {
             model: ProdutoModel,
             as: "DetalheProduto",
+            attributes: ['id', 'nome', 'preco'],
             through: {
               model: ItensPedidos,
               attributes: ["quantidade"],
@@ -161,7 +181,12 @@ class PedidoController {
         ],
       });
 
-      res.status(200).json({ msg: "Pedido atualizado com sucesso!", pedido: pedidoAtualizado });
+      res
+        .status(200)
+        .json({
+          msg: "Pedido atualizado com sucesso!",
+          pedido: pedidoAtualizado,
+        });
     } catch (error) {
       res
         .status(500)
@@ -174,9 +199,7 @@ class PedidoController {
       const id = req.params.id;
       const pedidoDeletado = await PedidoModel.destroy({ where: { id } });
       if (pedidoDeletado === 0) {
-        return res
-          .status(404)
-          .json({ msg: "Pedido não encontrado." });
+        return res.status(404).json({ msg: "Pedido não encontrado." });
       }
 
       res.status(200).json({ msg: "Pedido deletado com sucesso!" });

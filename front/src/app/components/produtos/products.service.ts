@@ -6,7 +6,7 @@ export interface Produto {
     id: string;
     nome: string;
     descricao: string;
-    preco: string;
+    preco: number;
     estoque: number;
     criado_em?: string;
     atualizado_em?: string;

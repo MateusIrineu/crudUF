@@ -2,14 +2,15 @@
   <po-page-content>
     <form [formGroup]="form">
       <div class="po-row">
-        <po-input
+        <po-combo
           class="po-md-12"
-          p-label="Cliente ID"
+          p-label="Cliente"
           p-icon="po-icon-user"
-          p-required="true"
+          [p-required]="true"
           formControlName="clienteId"
+          [p-options]="clientesOptions"
           [p-error]="form.get('clienteId')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-input>
+        </po-combo>
       </div>
 
       <div class="po-row po-mt-2">
@@ -20,24 +21,27 @@
 
       <div formArrayName="itens">
         <div *ngFor="let item of itens.controls; let i = index" [formGroupName]="i" class="po-row po-mb-3">
-        <po-input
-          class="po-md-6"
-          p-label="Produto ID"
-          p-icon="an an-user-check"
-          p-required="true"
-          [formControl]="getControl(item, 'produtoId')"
-          [p-error]="getControl(item, 'produtoId')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-input>
+          
+          <po-combo
+            class="po-md-6"
+            p-label="Produto"
+            p-icon="po-icon-document"
+            [p-required]="true"
+            [formControl]="getControl(item, 'produtoId')"
+            [p-options]="produtosOptions"
+            [p-error]="getControl(item, 'produtoId')?.hasError('required') ? 'Campo obrigatório' : ''">
+          </po-combo>
 
-        <po-input
-          class="po-md-4"
-          p-label="Quantidade"
-          p-required="true"
-          p-icon="an an-archive"
-          [formControl]="getControl(item, 'quantidade')"
-          [p-error]="getControl(item, 'quantidade')?.hasError('required') ? 'Campo obrigatório' : ''">
-        </po-input>          
-        <div class="po-md-2" style="display: flex; align-items: flex-end">
+          <po-input
+            class="po-md-4"
+            p-label="Quantidade"
+            p-required="true"
+            p-icon="po-icon-archive"
+            [formControl]="getControl(item, 'quantidade')"
+            [p-error]="getControl(item, 'quantidade')?.hasError('required') ? 'Campo obrigatório' : ''">
+          </po-input>
+
+          <div class="po-md-2" style="display: flex; align-items: flex-end">
             <po-button
               p-label="Remover"
               p-kind="danger"
@@ -53,6 +57,7 @@
       <div class="po-row po-mt-2">
         <div class="po-md-12">
           <po-button
+            style="margin-left: 40px;"
             p-label="Adicionar Item"
             p-kind="secondary"
             p-icon="po-icon-plus"
@@ -61,9 +66,11 @@
         </div>
       </div>
 
-      <div class="po-row po-mt-3">
+      <div 
+      class="po-row po-mt-3">
         <div class="po-md-12">
           <po-button
+            style="margin-left: 40px;"
             p-label="Salvar"
             p-kind="primary"
             p-icon="po-icon-ok"
@@ -73,6 +80,7 @@
           </po-button>
 
           <po-button
+            style="margin-left: 20px;"
             p-label="Cancelar"
             p-kind="secondary"
             p-icon="po-icon-close"

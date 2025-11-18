@@ -23,7 +23,7 @@ export class ProdutoListComponent implements OnInit {
     { property: 'id', label: 'ID', width: '10%' },
     { property: 'nome', label: 'Nome', width: '30%' },
     { property: 'descricao', label: 'Descrição', width: '30%' },
-    { property: 'preco', label: 'Preço', width: '15%' },
+    { property: 'preco', label: 'Preço', width: '15%', type: 'currency' },
     { property: 'estoque', label: 'Estoque', width: '15%' }
   ];
 

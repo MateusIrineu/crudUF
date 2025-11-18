@@ -21,7 +21,7 @@ const ProdutoModel = sequelize.define(
         },
 
         preco: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: false
         },
 

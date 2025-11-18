@@ -5,11 +5,19 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } fr
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PoPageModule, PoFieldModule, PoButtonModule, PoModule } from '@po-ui/ng-components';
 import { PedidoService, Pedido, ItemPedidoPayload } from '../pedidos.service';
+import { ClienteService } from '../../clientes/cliente.service';
+import { ProdutoService } from '../../produtos/products.service';
 
 @Component({
   selector: 'app-pedido-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PoPageModule, PoFieldModule, PoButtonModule, PoModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule, 
+    PoPageModule, 
+    PoFieldModule, 
+    PoButtonModule, 
+    PoModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './pedido-form.component.html'
 })
@@ -20,9 +28,14 @@ export class PedidoFormComponent implements OnInit {
   pedidoId: string | null = null;
   pageTitle = 'Novo Pedido';
 
+  clientesOptions: any[] = [];
+  produtosOptions: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private pedidoService: PedidoService,
+    private clienteService: ClienteService,
+    private produtoService: ProdutoService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -30,12 +43,39 @@ export class PedidoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.carregarClientes();
+    this.carregarProdutos();
+
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditando = true;
         this.pedidoId = params['id'];
         this.pageTitle = 'Editar Pedido';
       }
+    });
+  }
+
+  carregarClientes(): void {
+    this.clienteService.listarClientes().subscribe({
+      next: (clientes) => {
+        this.clientesOptions = clientes.map(cliente => ({
+          label: cliente.nome,
+          value: cliente.id
+        }));
+      },
+      error: (erro) => console.error('Erro ao carregar clientes:', erro)
+    });
+  }
+
+  carregarProdutos():void {
+    this.produtoService.listarProdutos().subscribe({
+      next: (produtos) => {
+        this.produtosOptions = produtos.map(produto => ({
+          label: produto.nome,
+          value: produto.id
+        }));
+      },
+      error: (erro) => console.error('Erro ao carregar produtos:', erro)
     });
   }
 

@@ -24,7 +24,7 @@
       <div class="po-row">
         <po-input
           class="po-md-6"
-          p-label="Preço (exemplo: R$ 10,00)"
+          p-label="Preço"
           p-icon="po-icon-money"
           p-required="true"
           formControlName="preco"
@@ -41,9 +41,12 @@
         </po-input>
       </div>
 
-      <div class="po-row po-mt-2">
+      <div 
+      style="padding-bottom: 100%;"
+      class="po-row po-mt-2">
         <div class="po-md-12">
           <po-button
+            style="margin-left: 40px;"
             p-label="Salvar"
             p-kind="primary"
             p-icon="po-icon-ok"
@@ -53,6 +56,7 @@
           </po-button>
 
           <po-button
+            style="margin-left: 20px;"
             p-label="Cancelar"
             p-kind="secondary"
             p-icon="po-icon-close"

@@ -20,7 +20,7 @@ export interface ItemPedido {
     produto?: { 
         id: string;
         nome: string;
-        preco: string;
+        preco: number;
     };
 }
 
